@@ -1,14 +1,20 @@
 import { Dialog, Tab, Transition } from '@headlessui/react'
 import { XIcon } from '@heroicons/react/outline'
 import { Fragment } from 'react'
-import { navigation } from '../DashboardLayout'
+import { navigation } from '../navigation'
 import clsx from 'clsx'
+import { Link } from '~/components/ui/Link'
 
 interface Props {
 	sidebarOpen: boolean
 	setSidebarOpen: (sidebarOpen: boolean) => void
+	application: string
 }
-export function MobileSidebar({ sidebarOpen, setSidebarOpen }: Props) {
+export function MobileSidebar({
+	sidebarOpen,
+	setSidebarOpen,
+	application,
+}: Props) {
 	return (
 		<Transition.Root show={sidebarOpen} as={Fragment}>
 			<Dialog
@@ -65,23 +71,19 @@ export function MobileSidebar({ sidebarOpen, setSidebarOpen }: Props) {
 							/>
 						</div>
 						<div className="mt-5 flex-1 h-0 overflow-y-auto">
-							<Tab.List className="px-2 space-y-1">
+							<div className="px-2 space-y-1">
 								{navigation.map((item) => (
-									<Tab
+									<Link
+										href={'/' + application + '/' + item.href.query.tab}
 										key={item.name}
-										className={({ selected }) =>
-											clsx(
-												selected
-													? 'bg-gray-100 text-gray-900'
-													: 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
-												'group flex items-center px-2 py-2 text-base font-medium rounded-md'
-											)
-										}
+										className={clsx(
+											'group flex items-center px-2 py-2 text-base font-medium no-underline rounded-md'
+										)}
 									>
 										{item.name}
-									</Tab>
+									</Link>
 								))}
-							</Tab.List>
+							</div>
 						</div>
 					</div>
 				</Transition.Child>

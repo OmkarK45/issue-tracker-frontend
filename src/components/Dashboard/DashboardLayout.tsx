@@ -1,95 +1,12 @@
 import { useState } from 'react'
 import { Tab } from '@headlessui/react'
-import {
-	CalendarIcon,
-	ChartBarIcon,
-	FolderIcon,
-	HomeIcon,
-	InboxIcon,
-	UsersIcon,
-} from '@heroicons/react/outline'
-import { MobileSidebar } from './Sidebar/MobileSidebar'
-import { Header } from './Header'
 import clsx from 'clsx'
 import { useRouter } from 'next/router'
 
-import {
-	ArchiveIcon,
-	ClockIcon,
-	UserCircleIcon,
-	ViewListIcon,
-} from '@heroicons/react/outline'
-import { IconType } from 'react-icons/lib'
+import { MobileSidebar } from './Sidebar/MobileSidebar'
+import { Header } from './Header'
 
-interface Navigation {
-	name: string
-	href: {
-		pathname: string
-		query: {
-			tab: string
-		}
-	}
-	icon: IconType | React.ElementType
-	component: React.ReactNode
-}
-
-export const navigation: Array<Navigation> = [
-	{
-		name: 'All Issues',
-		href: {
-			pathname: '/[tab]',
-			query: {
-				tab: 'all-issues',
-			},
-		},
-		icon: HomeIcon,
-		component: () => <h1>ok</h1>,
-	},
-	{
-		name: 'My Issues',
-		href: {
-			pathname: '/[tab]',
-			query: {
-				tab: 'my-issues',
-			},
-		},
-		icon: ViewListIcon,
-		component: () => <h1>o2k</h1>,
-	},
-	{
-		name: 'Assigned',
-		href: {
-			pathname: '/[tab]',
-			query: {
-				tab: 'assigned',
-			},
-		},
-		icon: UserCircleIcon,
-		component: () => <h1>o3k</h1>,
-	},
-	{
-		name: 'Closed',
-		href: {
-			pathname: '/[tab]',
-			query: {
-				tab: 'closed',
-			},
-		},
-		icon: ArchiveIcon,
-		component: () => <h1>o4k</h1>,
-	},
-	{
-		name: 'Recent',
-		href: {
-			pathname: '/[tab]',
-			query: {
-				tab: 'recent',
-			},
-		},
-		icon: ClockIcon,
-		component: () => <h1>o5k</h1>,
-	},
-]
+import { navigation } from './navigation'
 
 export function DashboardLayout({
 	defaultTab,
@@ -103,6 +20,7 @@ export function DashboardLayout({
 	const router = useRouter()
 
 	function handleChange(idx: number) {
+		console.log('inidex', idx)
 		const path = '/' + application + '/' + navigation[idx].href.query.tab
 		router.push(path, undefined, {
 			shallow: true,
@@ -119,6 +37,7 @@ export function DashboardLayout({
 				vertical
 			>
 				<MobileSidebar
+					application={application}
 					sidebarOpen={sidebarOpen}
 					setSidebarOpen={setSidebarOpen}
 				/>
@@ -148,6 +67,7 @@ export function DashboardLayout({
 												)
 											}
 										>
+											<item.icon className="mr-3 flex-shrink-0 h-6 w-6" />
 											{item.name}
 										</Tab>
 									))}
@@ -161,11 +81,9 @@ export function DashboardLayout({
 
 					<Tab.Panels>
 						<main className="flex-1 relative overflow-y-auto focus:outline-none">
-							<div className="py-6">
-								{navigation.map((panel, index) => {
-									return <Tab.Panel key={index}>{panel.component}</Tab.Panel>
-								})}
-							</div>
+							{navigation.map((panel, index) => {
+								return <Tab.Panel key={index}>{panel.component}</Tab.Panel>
+							})}
 						</main>
 					</Tab.Panels>
 				</div>
