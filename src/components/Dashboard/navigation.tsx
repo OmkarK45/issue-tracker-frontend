@@ -6,6 +6,7 @@ import {
 	ViewListIcon,
 } from '@heroicons/react/outline'
 import { IconType } from 'react-icons/lib'
+import { IssueListWrapper } from '../Issue/IssueListWrapper'
 
 interface Navigation {
 	name: string
@@ -29,7 +30,7 @@ export const navigation: Array<Navigation> = [
 			},
 		},
 		icon: HomeIcon,
-		component: () => <h1>ok</h1>,
+		component: () => <IssueListWrapper />,
 	},
 	{
 		name: 'My Issues',

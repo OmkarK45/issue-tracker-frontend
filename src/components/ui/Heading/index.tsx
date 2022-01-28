@@ -24,12 +24,9 @@ export function Heading({
 }: Props) {
 	return (
 		<Size
-			className={clsx(
-				'font-bold italic dark:text-white',
-				variants[Size],
-				className,
-				{ 'not-italic': noItalics }
-			)}
+			className={clsx('font-bold  dark:text-white', variants[Size], className, {
+				'not-italic': noItalics,
+			})}
 		>
 			{children}
 		</Size>

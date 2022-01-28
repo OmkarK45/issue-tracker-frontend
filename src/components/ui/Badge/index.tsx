@@ -19,7 +19,7 @@ const BadgeSizes = {
 	md: 'px-2 py-1',
 	xs: 'px-1 py-0.5 text-xs',
 }
-interface Props {
+export interface Props {
 	variant: keyof typeof BadgeVariants
 	size?: keyof typeof BadgeSizes
 	children: ReactNode

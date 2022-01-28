@@ -1,4 +1,4 @@
-import { createContext, Fragment, ReactNode } from 'react'
+import { createContext, Fragment, ReactNode, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import ModalHeader from './ModalHeader'
 import ModalContent from './ModalContent'
@@ -12,13 +12,20 @@ export interface Props {
 	onClose: () => void
 	children: ReactNode
 	className?: string
+	size?: 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl'
 }
 
 interface ModalContextType extends Omit<Props, 'children'> {}
 
 export const ModalContext = createContext<ModalContextType | null>(null)
 
-const Modal = ({ isOpen, onClose, children, className }: Props) => {
+const Modal = ({
+	isOpen,
+	onClose,
+	children,
+	className,
+	size = 'xl',
+}: Props) => {
 	return (
 		<ModalContext.Provider value={{ isOpen, onClose }}>
 			<Transition.Root show={isOpen} as={Fragment}>
@@ -58,8 +65,17 @@ const Modal = ({ isOpen, onClose, children, className }: Props) => {
 						>
 							<div
 								className={clsx(
-									'inline-block w-full bg-white sm:my-8 dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all  lg:align-top sm:max-w-lg sm:w-full ',
-									className
+									'inline-block !z-50 w-full bg-white sm:my-8 dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all  lg:align-top',
+									className,
+									{
+										'max-w-md': size === 'md',
+										'max-w-lg': size === 'lg',
+										'max-w-xl': size === 'xl',
+										'max-w-2xl': size === '2xl',
+										'max-w-3xl': size === '3xl',
+										'max-w-4xl': size === '4xl',
+										'max-w-5xl': size === '5xl',
+									}
 								)}
 							>
 								<GradientBar color="pink" size="md" />
@@ -80,5 +96,16 @@ Modal.Footer = ModalFooter
 export default Modal
 
 export function useModal() {
-	return useContext(ModalContext)
+	const [open, setOpen] = useState(false)
+
+	return {
+		open: () => setOpen(true),
+		close: () => setOpen(false),
+		props: {
+			open,
+			onClose() {
+				setOpen(false)
+			},
+		},
+	}
 }

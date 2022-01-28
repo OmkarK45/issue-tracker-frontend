@@ -12,7 +12,6 @@ export default function ApplicationPage({
 }
 
 export async function getServerSideProps(ctx: NextPageContext) {
-	console.log(ctx.query.tab, ctx.query.application)
 	return {
 		props: {
 			defaultTab: ctx.query.tab,

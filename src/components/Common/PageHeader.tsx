@@ -1,14 +1,15 @@
 import clsx from 'clsx'
+import React from 'react'
 import { Heading } from '../ui/Heading'
 
 interface PageHeaderProps {
 	title: string
-	subtitle?: string
+	subtitle?: string | React.ReactNode
 	image?: string
 	children?: React.ReactNode
 }
 const DEFAULT_IMAGE =
-	'https://res.cloudinary.com/dogecorp/image/upload/v1641642456/background2_amemmq.png'
+	'https://tuk-cdn.s3.amazonaws.com/assets/webapp/common/bg_image_dark.png'
 export function PageHeader({
 	title,
 	subtitle,
@@ -30,9 +31,7 @@ export function PageHeader({
 					>
 						{title}
 					</Heading>
-					<div>
-						<p className="prose text-gray-300 ">{subtitle}</p>
-					</div>
+					<span className="text-gray-300 ">{subtitle}</span>
 				</div>
 				<div>{children}</div>
 			</div>

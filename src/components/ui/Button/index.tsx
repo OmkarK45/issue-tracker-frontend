@@ -14,6 +14,7 @@ export interface Props extends ButtonOrLinkProps {
 	size?: 'xs' | 'sm' | 'base' | 'lg' | 'xl'
 	className?: string
 	disabled?: boolean
+	leftIcon?: React.ElementType
 }
 
 const ButtonSize = {
@@ -54,7 +55,7 @@ export function Button({
 }: Props) {
 	const sizeStyles = ButtonSize[size] || ButtonSize.sm
 	const variantStyles = ButtonVariants[variant] || 'solid'
-
+	const Icon = props.leftIcon
 	return (
 		<ButtonOrLink
 			className={clsx(
@@ -64,10 +65,11 @@ export function Button({
 				rounded === 'full' ? 'rounded-full px-4 py-3' : `rounded-${rounded}`,
 				!rounded && 'rounded-md',
 				fullWidth && 'w-full',
-				disabled && 'cursor-not-allowed',
+				disabled && 'cursor-not-allowed opacity-50',
 				className
 			)}
 			{...props}
+			onClick={disabled ? () => null : props.onClick}
 		>
 			{children}
 			{loading && (

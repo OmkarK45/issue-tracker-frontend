@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from 'axios'
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 export const BASE_URL = process.env.NEXT_PUBLIC_API_URL
 
@@ -18,9 +18,9 @@ export const fetcher = <T = any>(
 		.then((res) => res.data)
 }
 
-export const mutationFn = (
+export const mutationFn = <T extends any = any>(
 	url: string,
-	data: any,
+	data: T,
 	options?: AxiosRequestConfig<any> | undefined
 ) =>
 	axios

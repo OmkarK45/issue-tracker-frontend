@@ -78,15 +78,6 @@ export function Navbar() {
 										</button>
 
 										{/* Search */}
-										<button
-											className="p-2 ml-2"
-											onClick={() => setSearchOpen((prev) => !prev)}
-										>
-											<SearchIcon
-												className="h-5 w-5 text-gray-400 group-hover:text-gray-500"
-												aria-hidden="true"
-											/>
-										</button>
 									</div>
 
 									{/* Logo (lg-) */}
@@ -99,9 +90,7 @@ export function Navbar() {
 									</Link>
 
 									<div className="flex-1 flex items-center justify-end space-x-3">
-										<div className="hidden lg:block">
-											{router.pathname !== '/' && <SearchBar />}
-										</div>
+										<div className="hidden lg:block"></div>
 
 										<div className="flex items-center lg:ml-8">
 											{user?.isLoggedIn ? (

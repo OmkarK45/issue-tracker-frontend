@@ -15,7 +15,7 @@ export function Hero() {
 				</div>
 			</div>
 			<div className="my-10 space-x-3 flex items-center justify-center">
-				<Button href="/org" size="xl">
+				<Button href="/org/all-issues" size="xl">
 					Try For Free
 				</Button>
 				<Button size="xl" variant="ghost">
