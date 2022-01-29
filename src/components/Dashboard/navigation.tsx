@@ -14,6 +14,7 @@ interface Navigation {
 		pathname: string
 		query: {
 			tab: string
+			pageIndex?: string
 		}
 	}
 	icon: IconType | React.ElementType
@@ -27,6 +28,7 @@ export const navigation: Array<Navigation> = [
 			pathname: '/[tab]',
 			query: {
 				tab: 'all-issues',
+				pageIndex: `1`,
 			},
 		},
 		icon: HomeIcon,

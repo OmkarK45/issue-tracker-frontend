@@ -52,10 +52,10 @@ export function DashboardLayout({
 					onClose={createIssueModal.close}
 				/>
 				{/* Static sidebar for desktop */}
-				<div className="hidden md:flex md:flex-shrink-0">
-					<div className="flex flex-col w-64">
+				<div className="hidden md:flex  md:flex-shrink-0">
+					<div className="flex flex-col  w-64">
 						{/* Sidebar component, swap this element with another sidebar if you like */}
-						<div className="flex flex-col flex-grow border-r border-gray-200 pt-5  bg-gray-900 overflow-y-auto">
+						<div className=" flex  flex-col flex-grow border-r border-gray-200 pt-5  bg-gray-900 overflow-y-auto">
 							<div className="flex items-center flex-shrink-0 px-4">
 								<img
 									className="h-6 w-auto"
@@ -93,12 +93,12 @@ export function DashboardLayout({
 					<Header setSidebarOpen={setSidebarOpen} />
 
 					<Tab.Panels>
-						<main className="flex-1 relative overflow-y-auto  focus:outline-none">
+						<main className="flex-1 relative focus:outline-none h-screen overflow-y-scroll">
 							{!children &&
 								navigation.map((panel, index) => {
 									return <Tab.Panel key={index}>{panel.component}</Tab.Panel>
 								})}
-							{children}
+							<div>{children}</div>
 						</main>
 					</Tab.Panels>
 				</div>

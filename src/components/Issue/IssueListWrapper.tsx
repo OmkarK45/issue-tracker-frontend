@@ -1,10 +1,11 @@
+import { format } from 'date-fns'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
-import { HiOutlineArrowRight } from 'react-icons/hi'
-import { Column, useTable, usePagination } from 'react-table'
+import React, { useEffect, useState } from 'react'
+import { Column } from 'react-table'
 import useSWR from 'swr'
 import { fetcher } from '~/lib/fetchJson'
-import { ApiResponse, Issue, PaginatedApiResponse } from '~/lib/types'
+import { Issue, PaginatedApiResponse } from '~/lib/types'
+import { useStore } from '~/store/store'
 import { Badge } from '../ui/Badge'
 import { Data } from '../ui/Data'
 import { Link } from '../ui/Link'
@@ -19,15 +20,17 @@ export interface ColumnDetails {
 export function IssueListWrapper() {
 	const [pageIndex, setPageIndex] = useState(0)
 	const router = useRouter()
-	const { data: issuesList } = useSWR<PaginatedApiResponse<Issue>>(
-		`/issues/${router.query.application}/all?page=${pageIndex + 1}&limit=20`,
-		fetcher
-	)
-	console.log(issuesList)
+	const issueList = useStore((state) => state.issueList)
+	const setIssueList = useStore((state) => state.setIssueList)
 
+	const { data: swr } = useSWR<PaginatedApiResponse<Issue>>(
+		`/issues/${router.query.application}/all?page=${pageIndex + 1}&limit=20`,
+		fetcher,
+		{ onSuccess: (data) => setIssueList(data.data) }
+	)
 	const data = React.useMemo<ColumnDetails[]>(
 		() =>
-			issuesList?.data.map((issue) => {
+			swr?.data.map((issue) => {
 				return {
 					col1: issue.number,
 					col2: `${issue.application.name.slice(0, 3).toUpperCase()}-${
@@ -43,14 +46,21 @@ export function IssueListWrapper() {
 					col6: (
 						<Link
 							className="no-underline text-brand-800 "
-							href={`/${router.query.application}/issues/${issue.number}`}
+							href={`/${router.query.application}/issues/${
+								issue.number + ':' + issue.id
+							}`}
 						>
 							View More{' →'}
 						</Link>
 					),
+					col7: (
+						<p className="text-xs text-center">
+							{format(new Date(issue.createdAt), 'MMM d')}
+						</p>
+					),
 				}
 			}) as ColumnDetails[],
-		[issuesList?.data]
+		[swr?.data]
 	)
 
 	const columns = React.useMemo<Column<Record<string, string>>[]>(
@@ -79,20 +89,25 @@ export function IssueListWrapper() {
 				Header: 'View More',
 				accessor: 'col6',
 			},
+			{
+				Header: 'Date Created',
+				accessor: 'col7',
+			},
 		],
 		[]
 	)
 
 	return (
-		<div className="align-middle inline-block min-w-full ">
+		<div className="align-middle inline-block min-w-full pb-24">
 			<div className="shadow overflow-hidden border-b border-gray-200">
+				<small>Click the header to sort.</small>
 				<IssueTable columns={columns} data={data ?? []} />
 			</div>
 			<div className="px-5 mt-5">
 				<Pagination
 					onSetNext={() => setPageIndex(pageIndex + 1)}
 					onSetPrevious={() => setPageIndex(pageIndex - 1)}
-					pageInfo={issuesList?.pageInfo!}
+					pageInfo={swr?.pageInfo!}
 					pageIndex={pageIndex}
 					setPageIndex={setPageIndex}
 				/>

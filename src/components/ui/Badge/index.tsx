@@ -20,13 +20,18 @@ const BadgeSizes = {
 	xs: 'px-1 py-0.5 text-xs',
 }
 export interface Props {
-	variant: keyof typeof BadgeVariants
+	variant?: keyof typeof BadgeVariants
 	size?: keyof typeof BadgeSizes
 	children: ReactNode
 	className?: string
 }
 
-export function Badge({ children, variant, size = 'md', className }: Props) {
+export function Badge({
+	children,
+	variant = 'orange',
+	size = 'md',
+	className,
+}: Props) {
 	return (
 		<span
 			className={clsx(

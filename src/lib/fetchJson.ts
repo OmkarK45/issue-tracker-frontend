@@ -8,7 +8,7 @@ export { axios }
 
 export const fetcher = <T = any>(
 	url: string,
-	options: AxiosRequestConfig<any> | undefined
+	options?: AxiosRequestConfig<any> | undefined
 ): Promise<T> => {
 	return axios
 		.get<T | any>(BASE_URL + url, {

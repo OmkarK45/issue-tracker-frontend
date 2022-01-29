@@ -10,7 +10,12 @@ import { Button } from '../ui/Button'
 import { useMemo } from 'react'
 import { Select } from '../ui/Select'
 import { FaCheck } from 'react-icons/fa'
-import { mutationFn } from '~/lib/fetchJson'
+import { fetcher, mutationFn } from '~/lib/fetchJson'
+import { Issue, PaginatedApiResponse } from '~/lib/types'
+import { useRouter } from 'next/router'
+import { useStore } from '~/store/store'
+import { Data } from '../ui/Data'
+import useSWR from 'swr'
 
 interface Props {
 	isOpen: boolean
@@ -61,6 +66,14 @@ export function CreateIssueModal({ isOpen, onClose }: Props) {
 	const form = useZodForm({
 		schema: CreateIssueSchema,
 	})
+	const router = useRouter()
+
+	const addNewIssue = useStore((state) => state.addNewIssue)
+
+	const { mutate } = useSWR<PaginatedApiResponse<Issue>>(
+		`/issues/${router.query.application}/all?page=1&limit=20`,
+		fetcher
+	)
 
 	const mentions = useMemo(
 		() => ({
@@ -81,7 +94,6 @@ export function CreateIssueModal({ isOpen, onClose }: Props) {
 		[]
 	)
 
-	console.log(form.formState.errors)
 	async function handleSubmit(values: z.infer<typeof CreateIssueSchema>) {
 		const response = await mutationFn(`/issues/new`, {
 			title: values.title,
@@ -89,10 +101,11 @@ export function CreateIssueModal({ isOpen, onClose }: Props) {
 			priority: values.priority.value,
 			status: values.status.value,
 			type: 'TODO',
-			// this will go away soon
-			application_id: 'f26a8322-d4f8-4aae-906d-33d06339a5e8',
+			application_id: router.query.application,
+		}).then((res) => {
+			addNewIssue(res.data.newIssue)
+			mutate()
 		})
-		console.log('Response', response)
 	}
 
 	return (
@@ -105,7 +118,6 @@ export function CreateIssueModal({ isOpen, onClose }: Props) {
 			<Modal.Header dismiss>
 				<Heading size="h5">Create a new issue</Heading>
 			</Modal.Header>
-
 			<Card.Body noPadding>
 				<Form form={form} onSubmit={(values) => handleSubmit(values)}>
 					<Input
@@ -126,7 +138,7 @@ export function CreateIssueModal({ isOpen, onClose }: Props) {
 								<RichTextEditor
 									controls={[
 										['bold', 'italic', 'underline', 'strike'],
-										['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
+										['h1', 'h2', 'h3', 'h4'],
 										['link', 'code'],
 									]}
 									mentions={mentions}

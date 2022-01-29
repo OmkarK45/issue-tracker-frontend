@@ -1,5 +1,15 @@
-import { Column, usePagination, useTable } from 'react-table'
-import { Data } from '../ui/Data'
+import clsx from 'clsx'
+import { matchSorter } from 'match-sorter'
+import React from 'react'
+import {
+	Column,
+	useAsyncDebounce,
+	useFilters,
+	useGlobalFilter,
+	usePagination,
+	useSortBy,
+	useTable,
+} from 'react-table'
 import { ColumnDetails } from './IssueListWrapper'
 
 export function IssueTable({
@@ -23,9 +33,14 @@ export function IssueTable({
 		nextPage,
 		previousPage,
 		setPageSize,
-		state: { pageIndex, pageSize },
+		state: { pageIndex, pageSize, ...rest },
 	} = useTable(
-		{ columns, data, initialState: { pageSize: 20, pageIndex: 0 } },
+		{
+			columns,
+			data,
+			initialState: { pageSize: 20, pageIndex: 0 },
+		},
+		useSortBy,
 		usePagination
 	)
 
@@ -40,11 +55,18 @@ export function IssueTable({
 						<tr {...headerGroup.getHeaderGroupProps()} key={index}>
 							{headerGroup.headers.map((column, index2) => (
 								<th
-									{...column.getHeaderProps()}
+									{...column.getHeaderProps(column.getSortByToggleProps())}
 									className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
 									key={index2}
 								>
 									{column.render('Header')}
+									<span>
+										{column.isSorted
+											? column.isSortedDesc
+												? ' 🔽'
+												: ' 🔼'
+											: ''}
+									</span>
 								</th>
 							))}
 						</tr>
@@ -54,13 +76,19 @@ export function IssueTable({
 					{page.map((row, index) => {
 						prepareRow(row)
 						return (
-							<tr {...row.getRowProps()} key={index}>
+							<tr
+								{...row.getRowProps()}
+								key={index}
+								className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}
+							>
 								{row.cells.map((cell, index2) => {
 									return (
 										<td
 											{...cell.getCellProps()}
 											key={index2}
-											className="px-6 py-4 truncate max-w-sm whitespace-nowrap text-sm font-medium text-gray-900"
+											className={clsx(
+												'px-6 py-4 truncate max-w-sm whitespace-nowrap text-sm font-medium text-gray-900'
+											)}
 										>
 											{cell.render('Cell')}
 										</td>

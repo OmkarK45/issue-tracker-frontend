@@ -1,8 +1,8 @@
-/* This example requires Tailwind CSS v2.0+ */
 import {
 	ArrowNarrowLeftIcon,
 	ArrowNarrowRightIcon,
 } from '@heroicons/react/solid'
+import clsx from 'clsx'
 import { PageInfo } from '~/lib/types'
 
 export default function Pagination({
@@ -36,8 +36,14 @@ export default function Pagination({
 			<div className="hidden md:-mt-px md:flex">
 				{Array.from({ length: pageInfo?.totalPage }, (_, i) => (
 					<button
+						key={i}
 						onClick={() => setPageIndex(i)}
-						className="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium"
+						className={clsx(
+							'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium',
+							{
+								'border-brand-500 text-brand-600': i === pageIndex,
+							}
+						)}
 					>
 						{i + 1}
 					</button>

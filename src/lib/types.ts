@@ -33,6 +33,15 @@ export interface Issue {
 	application: {
 		name: string
 	}
+	createdBy: {
+		name: string
+		email: string
+		id: string
+	}
+	_count?: {
+		comments?: number
+		assigned_to?: number
+	}
 }
 
 export interface User {
@@ -82,3 +91,11 @@ export type StatusType = typeof Statii[number]
 export const Priorities = ['URGENT', 'HIGH', 'MEDIUM', 'LOW'] as const
 
 export type PriorityType = typeof Priorities[number]
+
+export interface Activity {
+	text: string
+	type: string
+	createdAt: string
+	id: string
+	author: { name: string }
+}
