@@ -2,34 +2,28 @@ import { object, string, z } from 'zod'
 import { Card } from '../ui/Card'
 import Form, { useZodForm } from '../ui/Form/Form'
 import { Heading } from '../ui/Heading'
-import { Input } from '../ui/Input'
 import Modal from '../ui/Modal'
-import RichTextEditor from '../ui/RichText'
-import { Controller } from 'react-hook-form'
-import { Button } from '../ui/Button'
 import { useMemo } from 'react'
-import { Select } from '../ui/Select'
-import { FaCheck } from 'react-icons/fa'
 import { fetcher, mutationFn } from '~/lib/fetchJson'
 import { Issue, PaginatedApiResponse } from '~/lib/types'
 import { useRouter } from 'next/router'
 import { useStore } from '~/store/store'
-import { Data } from '../ui/Data'
 import useSWR from 'swr'
+import { IssueForm } from './IssueForm'
 
 interface Props {
 	isOpen: boolean
 	onClose: () => void
 }
 
-const PRIORITY = {
+export const PRIORITY = {
 	URGENT: { value: 'URGENT', label: 'Urgent' },
 	HIGH: { value: 'HIGH', label: 'High' },
 	MEDIUM: { value: 'MEDIUM', label: 'Medium' },
 	LOW: { value: 'LOW', label: 'Low' },
 }
 
-const STATUS = {
+export const STATUS = {
 	OPEN: { value: 'OPEN', label: 'Open' },
 	IN_PROGRESS: { value: 'IN_PROGRESS', label: 'In Progress' },
 	CLOSED: { value: 'CLOSED', label: 'Closed' },
@@ -40,7 +34,7 @@ const STATUS = {
 	CANCELLED: { value: 'CANCELLED', label: 'Cancelled' },
 }
 
-const CreateIssueSchema = object({
+export const CreateIssueSchema = object({
 	title: string().min(1).max(255),
 	description: string().nonempty('Describe the issue in 1 character or more'),
 	// sorry i dont know how to type this
@@ -48,14 +42,14 @@ const CreateIssueSchema = object({
 	status: z.any(),
 })
 
-const people = [
+export const people = [
 	{ id: 1, value: 'Bill Horsefighter' },
 	{ id: 2, value: 'Amanda Hijacker' },
 	{ id: 3, value: 'Leo Summerhalter' },
 	{ id: 4, value: 'Jane Sinkspitter' },
 ]
 
-const tags = [
+export const tags = [
 	{ id: 1, value: 'JavaScript' },
 	{ id: 2, value: 'TypeScript' },
 	{ id: 3, value: 'Ruby' },
@@ -119,107 +113,12 @@ export function CreateIssueModal({ isOpen, onClose }: Props) {
 				<Heading size="h5">Create a new issue</Heading>
 			</Modal.Header>
 			<Card.Body noPadding>
-				<Form form={form} onSubmit={(values) => handleSubmit(values)}>
-					<Input
-						label="Issue title"
-						placeholder="Something is not working."
-						{...form.register('title')}
-					/>
-					<p className="block text-sm font-medium dark:text-white">
-						Describe the issue
-					</p>
-
-					<Controller
-						name="description"
-						control={form.control}
-						render={({ field: { onChange, value } }) => {
-							return (
-								// @ts-ignore
-								<RichTextEditor
-									controls={[
-										['bold', 'italic', 'underline', 'strike'],
-										['h1', 'h2', 'h3', 'h4'],
-										['link', 'code'],
-									]}
-									mentions={mentions}
-									className="font-sans"
-									onChange={onChange}
-									value={value}
-								/>
-							)
-						}}
-					/>
-					<div className="flex items-center space-x-2">
-						<div className="flex-1">
-							<Controller
-								name="priority"
-								control={form.control}
-								render={({ field: { onChange, value } }) => {
-									return (
-										<Select
-											onChange={onChange}
-											value={value}
-											label="Choose priority of the issue."
-										>
-											<Select.Button
-												label={value ? value.label : 'Select'}
-												variant={value ? 'default' : 'placeholder'}
-											/>
-											<Select.Options>
-												{Object.entries(PRIORITY).map(([key, props]) => (
-													<Select.Option
-														key={key}
-														value={props}
-														label={props.label}
-														selectedIcon={<FaCheck />}
-													/>
-												))}
-											</Select.Options>
-										</Select>
-									)
-								}}
-							/>
-						</div>
-						<div className="flex-1">
-							<Controller
-								name="status"
-								control={form.control}
-								render={({ field: { onChange, value } }) => {
-									return (
-										<Select
-											onChange={onChange}
-											value={value}
-											label="Choose status of the issue"
-										>
-											<Select.Button
-												label={value ? value.label : 'Select'}
-												variant={value ? 'default' : 'placeholder'}
-											/>
-											<Select.Options>
-												{Object.entries(STATUS).map(([key, props]) => (
-													<Select.Option
-														key={key}
-														value={props}
-														label={props.label}
-														selectedIcon={<FaCheck />}
-													/>
-												))}
-											</Select.Options>
-										</Select>
-									)
-								}}
-							/>
-						</div>
-					</div>
-					<Card.Body className="flex justify-end space-x-3">
-						<Button onClick={onClose} size="lg" variant="dark">
-							Cancel
-						</Button>
-						<Form.SubmitButton size="lg" type="submit">
-							Create
-						</Form.SubmitButton>
-					</Card.Body>
-				</Form>
+				<IssueForm
+					form={form}
+					handleSubmit={handleSubmit}
+					mentions={mentions}
+					onClose={onClose}
+				/>
 			</Card.Body>
 		</Modal>
 	)

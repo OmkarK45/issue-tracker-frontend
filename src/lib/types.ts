@@ -42,6 +42,13 @@ export interface Issue {
 		comments?: number
 		assigned_to?: number
 	}
+
+	assigned_to?: {
+		user: {
+			name: string
+			email: string
+		}
+	}[]
 }
 
 export interface User {

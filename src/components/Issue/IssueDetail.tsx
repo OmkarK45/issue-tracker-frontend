@@ -1,9 +1,11 @@
 import { PencilIcon } from '@heroicons/react/outline'
 import dynamic from 'next/dynamic'
 import { Issue } from '~/lib/types'
+import { useStore } from '~/store/store'
 import { Badge } from '../ui/Badge'
 import { Button } from '../ui/Button'
 import { Interweave } from '../ui/Interweave'
+import { EditIssueModal } from './EditIssueModal'
 import { IssueMetadata } from './IssueMetadata'
 
 const IssueActivity = dynamic(() => import('./IssueActivity'), {
@@ -11,7 +13,9 @@ const IssueActivity = dynamic(() => import('./IssueActivity'), {
 	loading: () => <p>Loading Issue Activity...</p>,
 })
 
-export function IssueDetail({ issueDetail }: { issueDetail: Issue }) {
+export function IssueDetail() {
+	const issueDetail = useStore((state) => state.currentIssue) as Issue
+
 	return (
 		<main className="flex-1 relative focus:outline-none">
 			<div className="py-8 xl:py-10">
@@ -22,7 +26,6 @@ export function IssueDetail({ issueDetail }: { issueDetail: Issue }) {
 								<div className="md:flex md:items-center md:justify-between md:space-x-4 xl:border-b xl:pb-6">
 									<div>
 										<span className="text-2xl flex items-center space-x-2 font-bold text-gray-900">
-											<Badge variant="orange">{issueDetail.status}</Badge>
 											<p>{issueDetail.title}</p>
 										</span>
 
@@ -34,13 +37,7 @@ export function IssueDetail({ issueDetail }: { issueDetail: Issue }) {
 										</p>
 									</div>
 									<div className="mt-4 flex space-x-3 md:mt-0">
-										<Button size="lg" variant="dark">
-											<PencilIcon
-												className="-ml-1 mr-2 h-5 w-5 text-gray-400"
-												aria-hidden="true"
-											/>
-											<span>Edit</span>
-										</Button>
+										<EditIssueModal issueDetail={issueDetail} />
 									</div>
 								</div>
 								<div className="md:hidden">
@@ -48,17 +45,18 @@ export function IssueDetail({ issueDetail }: { issueDetail: Issue }) {
 								</div>
 								<div className="xl:pb-0">
 									<h2 className="sr-only">Description</h2>
-									<div className="prose max-w-none">
+									<div className="prose max-w-none my-3">
 										<Interweave content={issueDetail.description} />
 									</div>
 								</div>
 							</div>
-							<div className="w-full my-32">
+							<div className="w-full my-32 relative ">
+								<p className="font-medium mb-5">Activity</p>
 								<IssueActivity />
 							</div>
 						</div>
 					</div>
-					<aside className="hidden xl:block xl:pl-8">
+					<aside className="hidden xl:block  xl:pl-8">
 						<IssueMetadata issueDetail={issueDetail} />
 					</aside>
 				</div>

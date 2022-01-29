@@ -7,10 +7,8 @@ import { Issue } from '~/lib/types'
 let store: any
 
 interface InitialState {
-	count: number
-	light: boolean
-	lastUpdate: number
 	issueList: Issue[]
+	currentIssue: Issue | null
 }
 type UseStoreState = typeof initializeStore extends (
 	...args: never
@@ -19,10 +17,8 @@ type UseStoreState = typeof initializeStore extends (
 	: never
 
 const initialState: InitialState = {
-	lastUpdate: 0,
-	light: false,
-	count: 0,
 	issueList: [],
+	currentIssue: null,
 }
 
 const zustandContext = createContext<UseStoreState>()
@@ -39,6 +35,11 @@ export const initializeStore = (preloadedState = {}) => {
 				console.log('ZUSTNAD STORE', issue)
 				set({
 					issueList: [...get().issueList, issue],
+				})
+			},
+			setCurrentIssue: (issue: Issue) => {
+				set({
+					currentIssue: issue,
 				})
 			},
 		}))

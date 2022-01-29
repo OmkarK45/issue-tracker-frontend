@@ -7,7 +7,7 @@ export function MemberList({ name }: { name: string }) {
 				<div className="flex-shrink-0">
 					<AiOutlineSmile className="h-5 w-5 rounded-full" />
 				</div>
-				<div className="text-sm font-medium text-gray-900">Omkar Kulkarni</div>
+				<div className="text-sm font-medium text-gray-900">{name}</div>
 			</a>
 		</li>
 	)

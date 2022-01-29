@@ -35,7 +35,10 @@ export function IssueMetadata({ issueDetail }: { issueDetail: Issue }) {
 				<div>
 					<h2 className="text-sm font-medium text-gray-500">Assignees</h2>
 					<ul role="list" className="mt-3 space-y-3">
-						<MemberList name="Omkar Kulkarni" />
+						{issueDetail.assigned_to?.length === 0 && <p>No one assigned</p>}
+						{issueDetail.assigned_to?.map(({ user }, index) => {
+							return <MemberList key={index} name={user.name} />
+						})}
 					</ul>
 				</div>
 			</div>
