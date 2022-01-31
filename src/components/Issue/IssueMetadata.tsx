@@ -14,10 +14,10 @@ export function IssueMetadata({ issueDetail }: { issueDetail: Issue }) {
 		<aside className="mt-8">
 			<h2 className="sr-only">Details</h2>
 			<div className="space-y-5">
-				<ListItem icon={LockOpenIcon} label={issueDetail.status} />
+				<ListItem icon={LockOpenIcon} label={issueDetail?.status} />
 				<ListItem
 					icon={ChartBarIcon}
-					label={'Priority - ' + issueDetail.priority}
+					label={'Priority - ' + issueDetail?.priority}
 				/>
 				<ListItem
 					icon={ChatAltIcon}
@@ -26,7 +26,7 @@ export function IssueMetadata({ issueDetail }: { issueDetail: Issue }) {
 				<ListItem
 					icon={CalendarIcon}
 					label={`Created at ${format(
-						new Date(issueDetail.createdAt),
+						new Date(issueDetail?.createdAt),
 						'MMM dd, yyyy'
 					)}`}
 				/>

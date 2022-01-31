@@ -17,20 +17,20 @@ export interface ColumnDetails {
 	[key: string]: any
 }
 
-export function IssueListWrapper() {
-	const [pageIndex, setPageIndex] = useState(0)
+export function IssueListWrapper({
+	issuesResponse,
+	pageIndex,
+	setPageIndex,
+}: {
+	issuesResponse: PaginatedApiResponse<Issue> | undefined
+	pageIndex: number
+	setPageIndex: (pageIndex: number) => void
+}) {
 	const router = useRouter()
-	const issueList = useStore((state) => state.issueList)
-	const setIssueList = useStore((state) => state.setIssueList)
 
-	const { data: swr } = useSWR<PaginatedApiResponse<Issue>>(
-		`/issues/${router.query.application}/all?page=${pageIndex + 1}&limit=20`,
-		fetcher,
-		{ onSuccess: (data) => setIssueList(data.data) }
-	)
 	const data = React.useMemo<ColumnDetails[]>(
 		() =>
-			swr?.data.map((issue) => {
+			issuesResponse?.data.map((issue) => {
 				return {
 					col1: issue.number,
 					col2: `${issue.application.name.slice(0, 3).toUpperCase()}-${
@@ -60,7 +60,7 @@ export function IssueListWrapper() {
 					),
 				}
 			}) as ColumnDetails[],
-		[swr?.data]
+		[issuesResponse?.data]
 	)
 
 	const columns = React.useMemo<Column<Record<string, string>>[]>(
@@ -107,7 +107,7 @@ export function IssueListWrapper() {
 				<Pagination
 					onSetNext={() => setPageIndex(pageIndex + 1)}
 					onSetPrevious={() => setPageIndex(pageIndex - 1)}
-					pageInfo={swr?.pageInfo!}
+					pageInfo={issuesResponse?.pageInfo!}
 					pageIndex={pageIndex}
 					setPageIndex={setPageIndex}
 				/>

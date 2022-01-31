@@ -1,12 +1,8 @@
-import {
-	ArchiveIcon,
-	ClockIcon,
-	HomeIcon,
-	UserCircleIcon,
-	ViewListIcon,
-} from '@heroicons/react/outline'
+import { ArchiveIcon, HomeIcon, ViewListIcon } from '@heroicons/react/outline'
 import { IconType } from 'react-icons/lib'
-import { IssueListWrapper } from '../Issue/IssueListWrapper'
+import { AllIssues } from '../Issue/AllIssues'
+import { ClosedIssues } from '../Issue/ClosedIssues'
+import { MyIssues } from '../Issue/MyIssues'
 
 interface Navigation {
 	name: string
@@ -32,7 +28,7 @@ export const navigation: Array<Navigation> = [
 			},
 		},
 		icon: HomeIcon,
-		component: () => <IssueListWrapper />,
+		component: () => <AllIssues />,
 	},
 	{
 		name: 'My Issues',
@@ -43,18 +39,7 @@ export const navigation: Array<Navigation> = [
 			},
 		},
 		icon: ViewListIcon,
-		component: () => <h1>o2k</h1>,
-	},
-	{
-		name: 'Assigned',
-		href: {
-			pathname: '/[tab]',
-			query: {
-				tab: 'assigned',
-			},
-		},
-		icon: UserCircleIcon,
-		component: () => <h1>o3k</h1>,
+		component: () => <MyIssues />,
 	},
 	{
 		name: 'Closed',
@@ -65,17 +50,6 @@ export const navigation: Array<Navigation> = [
 			},
 		},
 		icon: ArchiveIcon,
-		component: () => <h1>o4k</h1>,
-	},
-	{
-		name: 'Recent',
-		href: {
-			pathname: '/[tab]',
-			query: {
-				tab: 'recent',
-			},
-		},
-		icon: ClockIcon,
-		component: () => <h1>o5k</h1>,
+		component: () => <ClosedIssues />,
 	},
 ]
