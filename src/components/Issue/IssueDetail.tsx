@@ -22,7 +22,7 @@ export function IssueDetail() {
 				<div className="max-w-3xl relative mx-auto px-4 sm:px-6 lg:px-8 xl:max-w-7xl xl:grid xl:grid-cols-3">
 					<div className="xl:col-span-2 xl:pr-8 xl:border-r xl:border-gray-200">
 						<Button
-							variant="dark"
+							variant="ghost"
 							size="xs"
 							className="mb-3"
 							onClick={() => router.back()}

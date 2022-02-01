@@ -47,6 +47,7 @@ export interface Issue {
 		user: {
 			name: string
 			email: string
+			id: string
 		}
 	}[]
 }
@@ -100,9 +101,9 @@ export const Priorities = ['URGENT', 'HIGH', 'MEDIUM', 'LOW'] as const
 export type PriorityType = typeof Priorities[number]
 
 export interface Activity {
+	id: string
 	text: string
 	type: string
 	createdAt: string
-	id: string
 	author: { name: string }
 }

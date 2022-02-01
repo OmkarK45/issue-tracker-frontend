@@ -2,11 +2,12 @@ import { ComponentProps, ReactElement } from 'react'
 import { Listbox } from '@headlessui/react'
 import clsx from 'clsx'
 import { FaCheck } from 'react-icons/fa'
+import { CheckIcon } from '@heroicons/react/outline'
 
 interface SelectOption extends Omit<ComponentProps<'li'>, 'value'> {
 	value: unknown
 	label: string
-	selectedIcon: ReactElement
+	selectedIcon?: ReactElement
 }
 
 export const SelectOption = ({ value, label, selectedIcon }: SelectOption) => {
@@ -33,17 +34,6 @@ export const SelectOption = ({ value, label, selectedIcon }: SelectOption) => {
 							</span>
 						)}
 						<span className="block truncate">{label}</span>
-
-						{selected ? (
-							<span
-								className={clsx(
-									'absolute inset-y-0 left-0 flex border border-black items-center pl-3',
-									active ? 'text-gray-600' : 'text-gray-600'
-								)}
-							>
-								{selectedIcon}
-							</span>
-						) : null}
 					</div>
 				</>
 			)}

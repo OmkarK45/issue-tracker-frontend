@@ -2,13 +2,15 @@ import { useLayoutEffect } from 'react'
 import create, { UseBoundStore } from 'zustand'
 import createContext from 'zustand/context'
 import { combine } from 'zustand/middleware'
-import { Issue } from '~/lib/types'
+import { Activity, Application, Issue } from '~/lib/types'
 
 let store: any
 
 interface InitialState {
 	issueList: Issue[]
 	currentIssue: Issue | null
+	currentApplication: Application | null
+	activityList: Activity[]
 }
 type UseStoreState = typeof initializeStore extends (
 	...args: never
@@ -19,6 +21,8 @@ type UseStoreState = typeof initializeStore extends (
 const initialState: InitialState = {
 	issueList: [],
 	currentIssue: null,
+	currentApplication: null,
+	activityList: [],
 }
 
 const zustandContext = createContext<UseStoreState>()
@@ -40,6 +44,16 @@ export const initializeStore = (preloadedState = {}) => {
 			setCurrentIssue: (issue: Issue) => {
 				set({
 					currentIssue: issue,
+				})
+			},
+			setCurrentApplication: (application: Application) => {
+				set({
+					currentApplication: application,
+				})
+			},
+			setActivityList: (activityList: Activity[]) => {
+				set({
+					activityList,
 				})
 			},
 		}))

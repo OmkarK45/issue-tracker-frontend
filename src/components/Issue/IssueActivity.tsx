@@ -1,45 +1,52 @@
 import { ChatAltIcon, UserCircleIcon } from '@heroicons/react/solid'
 import clsx from 'clsx'
 import { format } from 'date-fns'
+import _ from 'lodash'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AiOutlineSmile } from 'react-icons/ai'
 import useSWR from 'swr'
 import { fetcher } from '~/lib/fetchJson'
-import { Activity, ApiResponse } from '~/lib/types'
+import { Activity, ApiResponse, PaginatedApiResponse } from '~/lib/types'
+import { useStore } from '~/store/store'
+import { CommentForm } from '../Comments/CommentForm'
 import { Button } from '../ui/Button'
 
 export default function IssueActivity() {
-	const [expanded, setExpanded] = useState(false)
 	const router = useRouter()
-	const { data } = useSWR<ApiResponse<Activity[]>>(
-		`/issues/${(router.query.id as string).split(':')[1]}/activity`,
+	const [page, setPage] = useState<number>(0)
+	const [activityList, setActivityList] = useState<Activity[]>([])
+
+	const [reachedEnd, setReachedEnd] = useState<boolean>(false)
+
+	const { data } = useSWR<PaginatedApiResponse<Activity>>(
+		`/issues/${(router.query.id as string).split(':')[1]}/activity?page=${
+			page + 1
+		}&limit=10`,
 		fetcher
 	)
 
+	useEffect(() => {
+		if (data?.pageInfo.totalCount === activityList.length) {
+			setReachedEnd(true)
+		}
+		setActivityList((previous) => {
+			console.log('POREVOS', previous)
+			const prev = _.uniqBy(previous.concat(data?.data ?? []), 'id')
+			return [...prev]
+		})
+	}, [data])
+
 	return (
-		<div className="flow-root">
-			<ul
-				role="list"
-				className={clsx('-mb-8 h-52 overflow-hidden bg-none rounded-lg', {
-					'overflow-visible  ': expanded,
-					'!h-52': expanded,
-					'!bg-gradient-to-t !from-gray-200 !to-transparent': !expanded,
-				})}
-			>
-				<div className="absolute z-10 right-0 -top-0">
-					<Button
-						onClick={() => setExpanded((prev) => !prev)}
-						size="xs"
-						variant="dark"
-					>
-						Show More
-					</Button>
-				</div>
-				{data?.data?.map((activityItem, activityItemIdx) => (
+		<div className="flow-root ">
+			<div className="mb-20">
+				<CommentForm page={page} />
+			</div>
+			<ul role="list" className={clsx('mb-10 h-full bg-none rounded-lg')}>
+				{activityList.map((activityItem, activityItemIdx) => (
 					<li key={activityItem.id}>
 						<div className="relative pb-8">
-							{activityItemIdx !== data?.data?.length - 1 ? (
+							{activityItemIdx !== activityList.length - 1 ? (
 								<span
 									className="absolute top-5 left-5 -ml-px h-full w-0.5 bg-gray-200"
 									aria-hidden="true"
@@ -68,6 +75,16 @@ export default function IssueActivity() {
 					</li>
 				))}
 			</ul>
+			<div className="flex items-center justify-center  mt-10">
+				<Button
+					size="xl"
+					variant="ghost"
+					disabled={reachedEnd}
+					onClick={() => !reachedEnd && setPage((prev) => prev + 1)}
+				>
+					{reachedEnd ? 'No more applications' : 'Load More'}
+				</Button>
+			</div>
 		</div>
 	)
 }

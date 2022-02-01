@@ -21,6 +21,7 @@ import { Navbar } from '~/components/Nav/DesktopNav'
 import { Button } from '~/components/ui/Button'
 import { fetcher } from '~/lib/fetchJson'
 import { Application } from '~/lib/types'
+import { initializeStore } from '~/store/store'
 
 interface Props {
 	application: Application
@@ -111,7 +112,7 @@ ApplicationDetailPage.getInitialProps = async (ctx: NextPageContext) => {
 				cookie: ctx.req?.headers.cookie ?? '',
 			},
 		})
-		console.log(applicationResponse.data)
+
 		return {
 			application: applicationResponse.data,
 		}

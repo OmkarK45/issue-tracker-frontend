@@ -42,20 +42,6 @@ export const CreateIssueSchema = object({
 	status: z.any(),
 })
 
-export const people = [
-	{ id: 1, value: 'Bill Horsefighter' },
-	{ id: 2, value: 'Amanda Hijacker' },
-	{ id: 3, value: 'Leo Summerhalter' },
-	{ id: 4, value: 'Jane Sinkspitter' },
-]
-
-export const tags = [
-	{ id: 1, value: 'JavaScript' },
-	{ id: 2, value: 'TypeScript' },
-	{ id: 3, value: 'Ruby' },
-	{ id: 3, value: 'Python' },
-]
-
 export function CreateIssueModal({ isOpen, onClose }: Props) {
 	const form = useZodForm({
 		schema: CreateIssueSchema,
@@ -67,25 +53,6 @@ export function CreateIssueModal({ isOpen, onClose }: Props) {
 	const { mutate } = useSWR<PaginatedApiResponse<Issue>>(
 		`/issues/${router.query.application}/all?page=1&limit=20`,
 		fetcher
-	)
-
-	const mentions = useMemo(
-		() => ({
-			allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
-			mentionDenotationChars: ['@', '#'],
-			source: (
-				searchTerm: string,
-				renderList: (items: any[]) => JSX.Element,
-				mentionChar: string
-			) => {
-				const list = mentionChar === '@' ? people : tags
-				const includesSearchTerm = list.filter((item) =>
-					item.value.toLowerCase().includes(searchTerm.toLowerCase())
-				)
-				renderList(includesSearchTerm)
-			},
-		}),
-		[]
 	)
 
 	async function handleSubmit(values: z.infer<typeof CreateIssueSchema>) {
@@ -113,12 +80,7 @@ export function CreateIssueModal({ isOpen, onClose }: Props) {
 				<Heading size="h5">Create a new issue</Heading>
 			</Modal.Header>
 			<Card.Body noPadding>
-				<IssueForm
-					form={form}
-					handleSubmit={handleSubmit}
-					mentions={mentions}
-					onClose={onClose}
-				/>
+				<IssueForm form={form} handleSubmit={handleSubmit} onClose={onClose} />
 			</Card.Body>
 		</Modal>
 	)

@@ -1,16 +1,21 @@
 import { PencilIcon } from '@heroicons/react/outline'
 import { useEffect, useMemo } from 'react'
+import toast from 'react-hot-toast'
 import { z } from 'zod'
+
+import { CreateIssueSchema } from './CreateIssueModal'
+import { IssueForm } from './IssueForm'
+
 import { mutationFn } from '~/lib/fetchJson'
 import { Issue } from '~/lib/types'
+
 import { useStore } from '~/store/store'
+
 import { Button } from '../ui/Button'
 import { Card } from '../ui/Card'
 import { useZodForm } from '../ui/Form/Form'
 import { Heading } from '../ui/Heading'
 import Modal, { useModal } from '../ui/Modal'
-import { CreateIssueSchema, people, tags } from './CreateIssueModal'
-import { IssueForm } from './IssueForm'
 
 export function EditIssueModal({ issueDetail }: { issueDetail: Issue }) {
 	const editIssueModal = useModal()
@@ -27,25 +32,6 @@ export function EditIssueModal({ issueDetail }: { issueDetail: Issue }) {
 		})
 	}, [])
 
-	const mentions = useMemo(
-		() => ({
-			allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
-			mentionDenotationChars: ['@', '#'],
-			source: (
-				searchTerm: string,
-				renderList: (items: any[]) => JSX.Element,
-				mentionChar: string
-			) => {
-				const list = mentionChar === '@' ? people : tags
-				const includesSearchTerm = list.filter((item) =>
-					item.value.toLowerCase().includes(searchTerm.toLowerCase())
-				)
-				renderList(includesSearchTerm)
-			},
-		}),
-		[]
-	)
-
 	async function handleSubmit(values: z.infer<typeof CreateIssueSchema>) {
 		const response = await mutationFn(`/issues/${issueDetail.id}/update`, {
 			title: values.title,
@@ -55,6 +41,8 @@ export function EditIssueModal({ issueDetail }: { issueDetail: Issue }) {
 		})
 		if (response.success) {
 			setCurrentIssue(response.data.updatedIssue)
+			toast.success('Issue updated')
+			editIssueModal.close()
 		}
 	}
 
@@ -80,7 +68,6 @@ export function EditIssueModal({ issueDetail }: { issueDetail: Issue }) {
 					<IssueForm
 						form={form}
 						handleSubmit={handleSubmit}
-						mentions={mentions}
 						onClose={editIssueModal.close}
 					/>
 				</Card.Body>

@@ -11,12 +11,10 @@ import RichTextEditor from '../ui/RichText'
 export function IssueForm({
 	handleSubmit,
 	form,
-	mentions,
 	onClose,
 }: {
 	handleSubmit: any
 	form: any
-	mentions: any
 	onClose: any
 }) {
 	return (
@@ -42,7 +40,6 @@ export function IssueForm({
 								['h1', 'h2', 'h3', 'h4'],
 								['link', 'code'],
 							]}
-							mentions={mentions}
 							className="font-sans"
 							onChange={onChange}
 							value={value}

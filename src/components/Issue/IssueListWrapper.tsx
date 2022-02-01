@@ -45,7 +45,7 @@ export function IssueListWrapper({
 					col5: <PriorityPill priority={issue.priority} />,
 					col6: (
 						<Link
-							className="no-underline text-brand-800 "
+							className="no-underline !text-brand-800 "
 							href={`/${router.query.application}/issues/${
 								issue.number + ':' + issue.id
 							}`}
@@ -100,7 +100,6 @@ export function IssueListWrapper({
 	return (
 		<div className="align-middle inline-block min-w-full pb-24">
 			<div className="shadow overflow-hidden border-b border-gray-200">
-				<small>Click the header to sort.</small>
 				<IssueTable columns={columns} data={data ?? []} />
 			</div>
 			<div className="px-5 mt-5">
