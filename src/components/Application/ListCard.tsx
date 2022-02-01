@@ -18,8 +18,8 @@ export function ListCard({ title, description, icon, onClick }: Props) {
 			<div className="mr-4 p-2 flex-shrink-0 self-center rounded-full bg-brand-500">
 				<Icon className="h-5 w-5 text-white" />
 			</div>
-			<div>
-				<h4 className="text-left font-semibold">{title}</h4>
+			<div className="text-left">
+				<h4 className="font-semibold">{title}</h4>
 				<p className="text-gray-500">{description}</p>
 			</div>
 		</button>

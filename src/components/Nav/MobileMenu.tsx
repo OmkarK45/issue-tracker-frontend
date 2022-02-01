@@ -129,18 +129,6 @@ export function MobileMenu({
 								</>
 							)}
 
-							{navItems.map((item) => (
-								<div className="flow-root" key={item.label}>
-									<Link
-										href={item.href}
-										className="-m-2 p-2 block font-medium text-gray-900 no-underline"
-									>
-										<span className="flex items-center space-x-3">
-											{item.icon} <p>{item.label}</p>
-										</span>
-									</Link>
-								</div>
-							))}
 							<div className="flow-root">
 								<button
 									onClick={handleLogout}

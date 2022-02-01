@@ -4,30 +4,47 @@ import {
 	ExternalLinkIcon,
 	UserIcon,
 	UsersIcon,
-	XIcon,
 } from '@heroicons/react/outline'
 import { format } from 'date-fns'
 import { NextPageContext } from 'next'
+import dynamic from 'next/dynamic'
 import router from 'next/router'
-import {
-	RiErrorWarningLine,
-	RiUserAddLine,
-	RiUserUnfollowLine,
-} from 'react-icons/ri'
+import { RiErrorWarningLine, RiUserUnfollowLine } from 'react-icons/ri'
+import useSWR from 'swr'
 import { ListCard } from '~/components/Application/ListCard'
+import { RemoveMemberModal } from '~/components/Application/RemoveMemberModal'
 import { PageHeader } from '~/components/Common/PageHeader'
 import { ListItem } from '~/components/Issue/ListItem'
 import { Navbar } from '~/components/Nav/DesktopNav'
-import { Button } from '~/components/ui/Button'
+import { ErrorFallback } from '~/components/ui/Fallbacks/ErrorFallback'
+import { Spinner } from '~/components/ui/Spinner'
 import { fetcher } from '~/lib/fetchJson'
 import { Application } from '~/lib/types'
-import { initializeStore } from '~/store/store'
+
+const DeleteApplicationModal = dynamic<{}>(
+	() =>
+		import('~/components/Application/DeleteApplicationModal').then(
+			(x) => x.DeleteApplicationModal
+		),
+	{ loading: () => <Spinner /> }
+)
+
+const AddMemberModal = dynamic<{}>(
+	() =>
+		import('~/components/Application/AddMemberModal').then(
+			(x) => x.AddMemberModal
+		),
+	{ loading: () => <Spinner /> }
+)
 
 interface Props {
 	application: Application
 }
 
 export default function ApplicationDetailPage({ application }: Props) {
+	const { data } = useSWR(`/app/${application.id}`, fetcher, {
+		fallbackData: application,
+	})
 	return (
 		<div>
 			<Navbar />
@@ -47,7 +64,7 @@ export default function ApplicationDetailPage({ application }: Props) {
 							src={application.logo ?? 'https://via.placeholder.com/150'}
 							alt="App logo"
 						/>
-						<div className=" bg-white py-6 border space-y-4 border-gray-200 dark:border-gray-700 h-full flex flex-col justify-center dark:bg-gray-800 rounded">
+						<div className=" bg-white py-6 border space-y-4 border-gray-200 dark:border-gray-700 h-full  dark:bg-gray-800 rounded">
 							<p className="text-xl mt-6 font-semibold leading-5 px-8 text-gray-800 dark:text-gray-100 ">
 								Application Info
 							</p>
@@ -68,13 +85,28 @@ export default function ApplicationDetailPage({ application }: Props) {
 									icon={ExternalLinkIcon}
 									label={application?.website ?? 'No URL available'}
 								/>
-								<ListItem
-									icon={UsersIcon}
-									label={`Total ${application._count?.members} members`}
-								/>
 							</div>
-							<div className="px-8 space-y-4">
-								<Button variant="danger">Delete</Button>
+							<p className="text-xl mt-6 font-semibold leading-5 px-8 text-gray-800 dark:text-gray-100 ">
+								Users ({application._count?.members})
+							</p>
+							<div className="px-8 overflow-auto space-y-4 mt-5">
+								{application._count?.members === 0 && (
+									<ErrorFallback
+										noAction
+										message="This organization does not have members."
+									/>
+								)}
+								{application?.members?.map((member) => {
+									return (
+										<ListItem
+											icon={UsersIcon}
+											label={`${member.name} - @${member.username}`}
+										/>
+									)
+								})}
+							</div>
+							<div className="px-8">
+								<DeleteApplicationModal />
 							</div>
 						</div>
 					</div>
@@ -85,18 +117,8 @@ export default function ApplicationDetailPage({ application }: Props) {
 							icon={RiErrorWarningLine}
 							onClick={() => router.push(`/${application.id}/all-issues`)}
 						/>
-						<ListCard
-							title="Add Member to app"
-							description="You can add a member to your organization"
-							icon={RiUserAddLine}
-							onClick={() => {}}
-						/>
-						<ListCard
-							title="Remove member from app"
-							description="You can remove member from organization."
-							icon={RiUserUnfollowLine}
-							onClick={() => {}}
-						/>
+						<AddMemberModal />
+						<RemoveMemberModal />
 					</div>
 				</div>
 			</div>

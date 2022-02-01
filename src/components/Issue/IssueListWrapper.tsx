@@ -1,13 +1,9 @@
 import { format } from 'date-fns'
 import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Column } from 'react-table'
-import useSWR from 'swr'
-import { fetcher } from '~/lib/fetchJson'
 import { Issue, PaginatedApiResponse } from '~/lib/types'
-import { useStore } from '~/store/store'
 import { Badge } from '../ui/Badge'
-import { Data } from '../ui/Data'
 import { Link } from '../ui/Link'
 import { IssueTable } from './IssueTable'
 import Pagination from './Pagination'
@@ -44,6 +40,11 @@ export function IssueListWrapper({
 					),
 					col5: <PriorityPill priority={issue.priority} />,
 					col6: (
+						<p className="text-xs">
+							{format(new Date(issue.createdAt), 'MMM d : h:mm a')}
+						</p>
+					),
+					col7: (
 						<Link
 							className="no-underline !text-brand-800 "
 							href={`/${router.query.application}/issues/${
@@ -52,11 +53,6 @@ export function IssueListWrapper({
 						>
 							View More{' →'}
 						</Link>
-					),
-					col7: (
-						<p className="text-xs text-center">
-							{format(new Date(issue.createdAt), 'MMM d')}
-						</p>
 					),
 				}
 			}) as ColumnDetails[],
@@ -86,11 +82,11 @@ export function IssueListWrapper({
 				accessor: 'col5',
 			},
 			{
-				Header: 'View More',
+				Header: 'Date Created',
 				accessor: 'col6',
 			},
 			{
-				Header: 'Date Created',
+				Header: 'View More',
 				accessor: 'col7',
 			},
 		],

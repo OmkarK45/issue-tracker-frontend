@@ -4,6 +4,7 @@ import { Fragment } from 'react'
 import { navigation } from '../navigation'
 import clsx from 'clsx'
 import { Link } from '~/components/ui/Link'
+import { Heading } from '~/components/ui/Heading'
 
 interface Props {
 	sidebarOpen: boolean
@@ -42,7 +43,7 @@ export function MobileSidebar({
 					leaveFrom="translate-x-0"
 					leaveTo="-translate-x-full"
 				>
-					<div className="relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-white">
+					<div className="relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 text-white bg-gray-900">
 						<Transition.Child
 							as={Fragment}
 							enter="ease-in-out duration-300"
@@ -63,12 +64,10 @@ export function MobileSidebar({
 								</button>
 							</div>
 						</Transition.Child>
-						<div className="flex-shrink-0 flex items-center px-4">
-							<img
-								className="h-8 w-auto"
-								src="https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-800-text.svg"
-								alt="Workflow"
-							/>
+						<div className="flex items-center px-4 text-center">
+							<Heading size="h5" className="text-white -mb-1 ">
+								SimpleIssue
+							</Heading>
 						</div>
 						<div className="mt-5 flex-1 h-0 overflow-y-auto">
 							<div className="px-2 space-y-1">
@@ -83,6 +82,14 @@ export function MobileSidebar({
 										{item.name}
 									</Link>
 								))}
+								<Link
+									href="/my-apps"
+									className={clsx(
+										'group flex items-center px-2 py-2 text-base font-medium  rounded-md'
+									)}
+								>
+									{`<<`} Back to my apps
+								</Link>
 							</div>
 						</div>
 					</div>

@@ -2,8 +2,10 @@ import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { Issue } from '~/lib/types'
 import { useStore } from '~/store/store'
+import { Footer } from '../Common/Footer'
 import { Button } from '../ui/Button'
 import { Interweave } from '../ui/Interweave'
+import { Link } from '../ui/Link'
 import { EditIssueModal } from './EditIssueModal'
 import { IssueMetadata } from './IssueMetadata'
 
@@ -66,6 +68,22 @@ export function IssueDetail() {
 					</div>
 					<aside className="hidden xl:block  xl:pl-8">
 						<IssueMetadata issueDetail={issueDetail} />
+						<div className="text-gray-500 text-xs mt-5 text-left md:text-center">
+							<p>&copy; SimpleIssue, {new Date().getFullYear()}</p>
+							<a
+								target="_blank"
+								rel="noreferrer noopener"
+								href="https://omkarkulkarni.vercel.app"
+							>
+								My Portfolio
+							</a>
+							<a
+								className="ml-2"
+								href="https://github.com/omkark45/issue-tracker-frontend"
+							>
+								Souce Code
+							</a>
+						</div>
 					</aside>
 				</div>
 			</div>

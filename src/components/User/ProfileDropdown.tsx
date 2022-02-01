@@ -2,6 +2,7 @@ import router from 'next/router'
 import toast from 'react-hot-toast'
 import {
 	HiOutlineChevronDown,
+	HiOutlineCube,
 	HiOutlineHome,
 	HiOutlineLogout,
 	HiOutlinePlay,
@@ -33,16 +34,10 @@ export function ProfileDropdown() {
 						Home
 					</MenuItem>
 					<MenuItem
-						href={`/favorites`}
-						icon={<HiOutlinePlay className="w-5 h-5" />}
+						href={`/my-apps`}
+						icon={<HiOutlineCube className="w-5 h-5" />}
 					>
-						Favorites
-					</MenuItem>
-					<MenuItem
-						href={`/my-playlists`}
-						icon={<HiOutlineVideoCamera className="w-5 h-5" />}
-					>
-						My Playlists
+						My Applications
 					</MenuItem>
 
 					<MenuItem

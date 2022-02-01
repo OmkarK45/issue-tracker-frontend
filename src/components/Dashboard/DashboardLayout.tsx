@@ -10,6 +10,8 @@ import { navigation } from './navigation'
 import { Button } from '../ui/Button'
 import { CreateIssueModal } from '../Issue/CreateIssueModal'
 import { useModal } from '../ui/Modal'
+import { Heading } from '../ui/Heading'
+import { Link } from '../ui/Link'
 
 export function DashboardLayout({
 	defaultTab,
@@ -56,12 +58,10 @@ export function DashboardLayout({
 					<div className="flex flex-col  w-64">
 						{/* Sidebar component, swap this element with another sidebar if you like */}
 						<div className=" flex  flex-col flex-grow border-r border-gray-200 pt-5  bg-gray-900 overflow-y-auto">
-							<div className="flex items-center flex-shrink-0 px-4">
-								<img
-									className="h-6 w-auto"
-									src="https://tailwindui.com/img/logos/workflow-logo-rose-500-mark-white-text.svg"
-									alt="Workflow"
-								/>
+							<div className="flex items-center px-4 text-center">
+								<Heading size="h5" className="text-white -mb-1 ">
+									SimpleIssue
+								</Heading>
 							</div>
 							<div className="mt-5 flex-grow flex flex-col">
 								<Tab.List className="flex-1 px-2 bg-gray-800 space-y-1 py-3 top-0 bottom-0">
@@ -85,6 +85,11 @@ export function DashboardLayout({
 										</Tab>
 									))}
 								</Tab.List>
+							</div>
+							<div className="my-3 text-center">
+								<Link href={`/my-apps`} className="text-white">
+									{`<<`} Back to all apps
+								</Link>
 							</div>
 						</div>
 					</div>

@@ -1,11 +1,10 @@
 import { SearchIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
-import { matchSorter } from 'match-sorter'
 import React, { useState } from 'react'
 import {
 	Column,
+	Row,
 	useAsyncDebounce,
-	useFilters,
 	useGlobalFilter,
 	usePagination,
 	useSortBy,
@@ -55,6 +54,10 @@ export function IssueTable({
 		preGlobalFilteredRows,
 		globalFilter,
 		setGlobalFilter,
+	}: {
+		preGlobalFilteredRows: Row<ColumnDetails>[]
+		globalFilter: string
+		setGlobalFilter: (value: string) => void
 	}) {
 		const [value, setValue] = useState(globalFilter)
 		const onChange = useAsyncDebounce((value) => {
@@ -118,9 +121,9 @@ export function IssueTable({
 									<span>
 										{column.isSorted
 											? column.isSortedDesc
-												? ' 🔽'
-												: ' 🔼'
-											: ''}
+												? ' ⬇️'
+												: ' ⬆️'
+											: ' ↕️'}
 									</span>
 								</th>
 							))}
