@@ -9,12 +9,12 @@ import axios from 'axios'
 export default withIronSessionApiRoute(registerRoute, sessionOptions)
 
 async function registerRoute(req: NextApiRequest, res: NextApiResponse) {
-	const { email, password, name } = await req.body
+	const { email, password, name, username } = await req.body
 
 	try {
 		const response = await axios.post(
 			`${process.env.API_URL}/auth/signup`,
-			{ email, password, name },
+			{ email, password, name, username },
 			{
 				withCredentials: true,
 				headers: {

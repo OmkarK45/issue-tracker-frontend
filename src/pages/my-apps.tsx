@@ -2,6 +2,7 @@ import { NextPageContext } from 'next'
 import { ApplicationList } from '~/components/Application/ApplicationList'
 import { PageHeader } from '~/components/Common/PageHeader'
 import { Navbar } from '~/components/Nav/DesktopNav'
+import { Alert } from '~/components/ui/Alert'
 import { fetcher } from '~/lib/fetchJson'
 import { Application, PaginatedApiResponse } from '~/lib/types'
 import useUser from '~/lib/useUser'
@@ -14,11 +15,18 @@ export default function ApplicationsPage({
 	const user = useUser({
 		redirectTo: '/auth/login?redirect=/my-apps',
 	})
-	
+
 	return (
 		<div>
 			<Navbar />
 			<PageHeader title="Your Applications." />
+			<div className="container max-w-7xl mx-auto mt-5">
+				<Alert
+					message="These are your applications. You can create as many applications you want."
+					status="info"
+					fullWidth
+				/>
+			</div>
 			<ApplicationList applications={applications} />
 		</div>
 	)

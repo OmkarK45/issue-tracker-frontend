@@ -8,7 +8,7 @@ export function Hero() {
 
 	return (
 		<>
-			<div className="md:mt-16 mx-auto max-w-7xl px-4 sm:px-6">
+			<div className="mt-20 md:mt-16 mx-auto max-w-7xl px-4 sm:px-6">
 				<div className="text-center">
 					<h1 className="text-4xl tracking-tight font-extrabold sm:text-5xl md:text-6xl">
 						<span className="block">Track Issues. Ship Faster.</span>

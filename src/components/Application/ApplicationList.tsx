@@ -5,6 +5,7 @@ import useSWR from 'swr'
 import { fetcher } from '~/lib/fetchJson'
 import { Application, PaginatedApiResponse } from '~/lib/types'
 import useUser from '~/lib/useUser'
+import { Alert } from '../ui/Alert'
 import { Button } from '../ui/Button'
 import { Link } from '../ui/Link'
 import { useModal } from '../ui/Modal'
@@ -43,7 +44,7 @@ export function ApplicationList({
 
 	return (
 		<div className="mx-auto container md:max-w-7xl ">
-			<div className="container mx-auto grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4  pt-6 gap-8">
+			<div className="container mx-auto grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 pt-6 gap-8">
 				{applicationsList.map((application) => (
 					<Link
 						href={`/${application.id}`}
@@ -53,7 +54,6 @@ export function ApplicationList({
 						<ApplicationCard {...application} />
 					</Link>
 				))}
-				<ApplicationCard name="Foo" description="bar" id="1" />
 				<div>
 					<div className="relative shadow-sm flex items-end justify-center overflow-hidden  border-2 border-gray-500 border-dashed md:rounded-lg group h-56">
 						<button

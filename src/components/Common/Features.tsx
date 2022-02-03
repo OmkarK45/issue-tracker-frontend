@@ -9,12 +9,12 @@ export interface Feature {
 }
 export function Features({ features }: { features: Feature[] }) {
 	return (
-		<section className="pt-20 pb-32 bg-white">
+		<section className="pt-20 pb-32 bg-white dark:bg-gray-800">
 			<div className="px-20 mx-auto max-w-7xl">
-				<h2 className="mb-1 text-3xl font-extrabold leading-tight text-gray-900">
+				<h2 className="mb-1 text-3xl font-extrabold leading-tight dark:text-gray-100 text-gray-900">
 					Features
 				</h2>
-				<p className="mb-16 text-lg text-gray-500">
+				<p className="mb-16 text-lg text-gray-500 dark:text-gray-300">
 					Here is our list of our powerful features.
 				</p>
 				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-16 lg:gap-x-24 gap-y-20">
@@ -39,7 +39,7 @@ export function Feature({ feature }: { feature: Feature }) {
 			>
 				<Icon className={clsx('w-8 h-8', feature.color.text)} />
 			</div>
-			<h3 className="mb-2 text-base font-semibold leading-tight text-gray-900 lg:text-lg">
+			<h3 className="mb-2 text-base font-semibold leading-tight text-gray-900 dark:text-gray-200 lg:text-lg">
 				{feature.title}
 			</h3>
 			<p className="text-sm text-gray-500 lg:text-base">

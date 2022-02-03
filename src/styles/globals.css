@@ -4,8 +4,8 @@
 @tailwind components;
 
 .hero-bg {
-	background: url('/images/background2.png') no-repeat;
-	background-size: cover;
+	background: url('/images/patterns2.png') no-repeat;
+	background-size: contain;
 }
 
 .monolisa {
