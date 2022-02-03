@@ -10,6 +10,7 @@ import {
 	useSortBy,
 	useTable,
 } from 'react-table'
+import { PageHeader } from '../Common/PageHeader'
 import { ColumnDetails } from './IssueListWrapper'
 
 export function IssueTable({

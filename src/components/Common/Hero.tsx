@@ -1,6 +1,11 @@
+import useUser from '~/lib/useUser'
 import { Button } from '../ui/Button'
 
 export function Hero() {
+	const { user } = useUser({
+		redirectTo: '/my-apps',
+	})
+
 	return (
 		<>
 			<div className="md:mt-16 mx-auto max-w-7xl px-4 sm:px-6">
@@ -15,11 +20,8 @@ export function Hero() {
 				</div>
 			</div>
 			<div className="my-10 space-x-3 flex items-center justify-center">
-				<Button href="/my-apps" size="xl">
-					Try For Free
-				</Button>
-				<Button size="xl" variant="ghost">
-					{`>`} See Demo App
+				<Button href={user?.isLoggedIn ? '/my-apps' : '/auth/login'} size="xl">
+					{user?.isLoggedIn ? 'Go to my dashboard' : 'Try for free'}
 				</Button>
 			</div>
 			<div className="relative md:mt-16">
@@ -30,7 +32,7 @@ export function Hero() {
 				<div className="max-w-7xl mx-auto px-4 sm:px-6">
 					<img
 						className="relative rounded-lg shadow-lg"
-						src="https://tailwindui.com/img/component-images/top-nav-with-multi-column-layout-screenshot.jpg"
+						src={'/images/hero.png'}
 						alt="App screenshot"
 					/>
 				</div>

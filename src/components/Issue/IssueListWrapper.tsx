@@ -3,6 +3,8 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import { Column } from 'react-table'
 import { Issue, PaginatedApiResponse } from '~/lib/types'
+import { useStore } from '~/store/store'
+import { PageHeader } from '../Common/PageHeader'
 import { Badge } from '../ui/Badge'
 import { Link } from '../ui/Link'
 import { IssueTable } from './IssueTable'
@@ -23,6 +25,7 @@ export function IssueListWrapper({
 	setPageIndex: (pageIndex: number) => void
 }) {
 	const router = useRouter()
+	const currentApplication = useStore((state) => state.currentApplication)
 
 	const data = React.useMemo<ColumnDetails[]>(
 		() =>

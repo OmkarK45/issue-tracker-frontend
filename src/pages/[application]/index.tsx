@@ -20,6 +20,7 @@ import { ErrorFallback } from '~/components/ui/Fallbacks/ErrorFallback'
 import { Spinner } from '~/components/ui/Spinner'
 import { fetcher } from '~/lib/fetchJson'
 import { Application } from '~/lib/types'
+import useUser from '~/lib/useUser'
 
 const DeleteApplicationModal = dynamic<{}>(
 	() =>
@@ -42,6 +43,10 @@ interface Props {
 }
 
 export default function ApplicationDetailPage({ application }: Props) {
+	const { user } = useUser({
+		redirectTo: `/auth/login?redirect=/${application.id}`,
+	})
+
 	const { data } = useSWR(`/app/${application.id}`, fetcher, {
 		fallbackData: application,
 	})

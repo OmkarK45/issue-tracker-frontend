@@ -14,6 +14,7 @@ const SignUpSchema = z.object({
 	email: z.string().email(),
 	name: z.string().min(2),
 	password: z.string().min(5),
+	username: z.string().min(2),
 })
 
 export function SignUp() {
@@ -33,6 +34,7 @@ export function SignUp() {
 			email: values.email,
 			password: values.password,
 			name: values.name,
+			username: values.username,
 		}
 
 		try {
@@ -62,6 +64,12 @@ export function SignUp() {
 					type="text"
 					placeholder="John Doe"
 					{...form.register('name')}
+				/>
+				<Input
+					label="Your Username"
+					type="text"
+					placeholder="im_johndoe"
+					{...form.register('username')}
 				/>
 				<Input
 					label="Email Address"

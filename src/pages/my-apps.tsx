@@ -14,6 +14,7 @@ export default function ApplicationsPage({
 	const user = useUser({
 		redirectTo: '/auth/login?redirect=/my-apps',
 	})
+	
 	return (
 		<div>
 			<Navbar />

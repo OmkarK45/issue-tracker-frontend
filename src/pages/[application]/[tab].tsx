@@ -1,5 +1,6 @@
 import { NextPageContext } from 'next'
 import { DashboardLayout } from '~/components/Dashboard/DashboardLayout'
+import useUser from '~/lib/useUser'
 
 export default function ApplicationPage({
 	defaultTab,
@@ -8,6 +9,9 @@ export default function ApplicationPage({
 	defaultTab: string
 	application: string
 }) {
+	const { user } = useUser({
+		redirectTo: '/auth/login',
+	})
 	return <DashboardLayout defaultTab={defaultTab} application={application} />
 }
 

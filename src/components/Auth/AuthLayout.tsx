@@ -2,7 +2,6 @@ import React from 'react'
 import { Card } from '~/components/ui/Card'
 import { Heading } from '~/components/ui/Heading'
 import { GradientBar } from '../ui/GradientBar'
-import { Logo } from '../ui/Logo'
 import { Patterns } from '../ui/Patterns'
 
 interface Props {
@@ -19,7 +18,6 @@ export function AuthLayout({ title, subtitle, children }: Props) {
 			</div>
 			<div className="mb-8 text-center">
 				<div className="inline-flex items-center mb-1 space-x-3">
-					<Logo className="hi-solid hi-cube-transparent inline-block w-10 h-10 text-brand-500" />
 					<Heading size="h2">{title}</Heading>
 				</div>
 				<p className="mt-3 text-gray-500">{subtitle}</p>
