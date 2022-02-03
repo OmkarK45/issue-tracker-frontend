@@ -20,8 +20,8 @@ const SignUpSchema = z.object({
 export function SignUp() {
 	const authRedirect = useAuthRedirect()
 
-	const { mutateUser } = useUser({
-		redirectTo: '/products',
+	const { mutateUser, error } = useUser({
+		redirectTo: '/my-apps',
 		redirectIfFound: true,
 	})
 
@@ -36,7 +36,6 @@ export function SignUp() {
 			name: values.name,
 			username: values.username,
 		}
-
 		try {
 			mutateUser(
 				await fetchJson('/api/register', {
@@ -49,7 +48,10 @@ export function SignUp() {
 			authRedirect()
 		} catch (error) {
 			if (error instanceof FetchError) {
-				toast.error(error.data.message)
+				// toast.error(error.data.message)
+				toast.error(
+					'Given username or email is already taken. Please use another one.'
+				)
 			} else {
 				toast.error("We are sorry but something isn't right. Please try again.")
 			}

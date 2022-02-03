@@ -85,32 +85,3 @@ export class FetchError extends Error {
 		this.data = data ?? { message: message }
 	}
 }
-
-export const TMDB_BASE_URL = 'https://api.themoviedb.org/3/movie/'
-// https://api.themoviedb.org/3/movie/{movie_id}/credits?api_key=<<api_key>>&language=en-US
-export const TMDB_API_KEY = process.env.TMDB_API_KEY
-export const TMDB_IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/original/'
-
-export const tmdBFetcher = <T = any>(
-	imdb_id: string,
-	options: AxiosRequestConfig<any> | undefined
-): Promise<T> => {
-	return axios
-		.get<T | any>(
-			TMDB_BASE_URL +
-				imdb_id +
-				'/credits' +
-				`?api_key=448845c1c0a389a49d089ad74d9160d5`,
-			{
-				...options,
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				params: {
-					api_key: process.env.TMDB_API_KEY,
-				},
-				withCredentials: false,
-			}
-		)
-		.then((res) => res.data)
-}

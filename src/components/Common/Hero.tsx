@@ -3,7 +3,7 @@ import { Button } from '../ui/Button'
 
 export function Hero() {
 	const { user } = useUser({
-		redirectTo: '/my-apps',
+		redirectIfFound: false,
 	})
 
 	return (
