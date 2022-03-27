@@ -14,7 +14,7 @@ export function PageHeader({
 	title,
 	subtitle,
 	children,
-	image = DEFAULT_IMAGE,
+	image = '/images/header.png',
 }: PageHeaderProps) {
 	return (
 		<div className="relative py-6 lg:py-10 ">

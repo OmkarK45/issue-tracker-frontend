@@ -67,7 +67,7 @@ export function CreateApplicationModal({ isOpen, onClose }: Props) {
 						{...form.register('logo')}
 					/>
 					<Card.Body className="flex justify-end space-x-2">
-						<Button size="lg" variant="dark">
+						<Button onClick={onClose} size="lg" variant="dark">
 							Cancel
 						</Button>
 						<Form.SubmitButton size="lg" type="submit">
